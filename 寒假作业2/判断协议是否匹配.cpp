@@ -1,0 +1,77 @@
+#include<stdio.h>
+int main()
+{
+	FILE *fp1;
+	FILE *fp2;
+	fp1=fopen("C:\\Users\\joy\\Desktop\\dataset\\data\\dataset1\\rule1.txt","r");
+	fp2=fopen("C:\\Users\\joy\\Desktop\\dataset\\data\\dataset1\\packet1.txt","r");
+	int a[10000][10],b[10000][10],i=1,j,k,c[10000][10],d[10000]={0},f[1000],flag=1;
+	while(fgetc(fp1)!=EOF)
+	{
+		if(fgetc(fp1)=='0')
+		{
+			if(fgetc(fp1)=='x')
+			{
+				j=1;
+				while((a[i][j]=fgetc(fp1))!='/')
+				{
+					if(a[i][j]<='9')
+					a[i][j]=a[i][j]-'0';
+					if(a[i][j]>='a')
+					a[i][j]=a[i][j]-'a'+10;
+					j++;
+				}
+				c[i][1]=16*a[i][j-2]+a[i][j-1];
+				while((a[i][j]=fgetc(fp1))!='\n')
+				{
+					if(a[i][j]<='9')
+					a[i][j]=a[i][j]-'0';
+					if(a[i][j]>='a')
+					a[i][j]=a[i][j]-'a'+10;
+					j++;
+				}
+				c[i][2]=16*a[i][j-2]+a[i][j-1];
+				i++;
+			}
+		}
+	}
+	k=0;i=1;
+	while(fgetc(fp1)!=EOF)
+	{
+		if(fgetc(fp2)==' ')
+		k++;
+		if(k==4)
+		{
+			j=1;
+			while(b[i][j]!='\n')
+			{
+				if(b[i][j]<='9')
+					b[i][j]=b[i][j]-'0';
+				if(b[i][j]>='a')
+					a[i][j]=a[i][j]-'a'+10;
+					j++;
+			}
+			if(j==4)
+			d[i]=b[i][j-3]*100+b[i][j-2]*10+b[i][j-1];
+			if(j==3)
+			d[i]=b[i][j-2]*10+b[i][j-1];
+			if(j==1)
+			d[i]=b[i][j-1];
+			i++;
+		}
+	}
+	int n=i;
+	k=1;
+	for(i=1;i<=n;i++)
+	{
+		if(d[i]>=c[i][1]&&d[i]<=c[i][2])
+		{
+			f[k]=i;
+			k++;
+		}
+	}
+	if(k==1)
+	flag=-1;
+	fclose(fp1);
+	fclose(fp2);
+}
